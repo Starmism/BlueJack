@@ -1,7 +1,6 @@
 #include <iostream>
 #include "dealer.h"
 
-
 int main() {
     initCardValues();
     auto dealer = std::make_unique<Dealer>();
