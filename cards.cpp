@@ -2,6 +2,8 @@
 #include "cards.h"
 
 std::unordered_map<Value, int> cardValues;
+std::unordered_map<Suit, std::string> suitNames;
+std::unordered_map<Value, std::string> valueNames;
 
 void initCardValues() {
     cardValues[Ace] = -1;
@@ -17,9 +19,28 @@ void initCardValues() {
     cardValues[Jack] = 10;
     cardValues[Queen] = 10;
     cardValues[King] = 10;
+
+    suitNames[Diamonds] = "Diamonds";
+    suitNames[Hearts] = "Hearts";
+    suitNames[Clubs] = "Clubs";
+    suitNames[Spades] = "Spades";
+
+    valueNames[Ace] = "Ace";
+    valueNames[Two] = "Two";
+    valueNames[Three] = "Three";
+    valueNames[Four] = "Four";
+    valueNames[Five] = "Five";
+    valueNames[Six] = "Six";
+    valueNames[Seven] = "Seven";
+    valueNames[Eight] = "Eight";
+    valueNames[Nine] = "Nine";
+    valueNames[Ten] = "Ten";
+    valueNames[Jack] = "Jack";
+    valueNames[Queen] = "Queen";
+    valueNames[King] = "King";
 }
 
-// Define the ++ operator for both suit and value so we can iterate over them
+// Define the ++ operator for both suit and value, so we can iterate over them
 Suit& operator ++ (Suit& suit) {
     if (suit == Spades) {
         throw std::out_of_range("for Suit& operator ++ (Suit&)");
@@ -35,6 +56,13 @@ Value& operator ++ (Value& value) {
     value = Value(static_cast<std::underlying_type<Value>::type>(value) + 1);
     return value;
 }
+
+std::string getCardName(Card card) {
+    return valueNames[card.value] + " of " + suitNames[card.suit];
+}
+
+
+
 
 Deck::Deck() {
     for (Suit suit = Diamonds; suit != Spades; ++suit) {

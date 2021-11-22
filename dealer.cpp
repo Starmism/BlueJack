@@ -24,15 +24,18 @@ void Dealer::hitPlayers() {
 
 Dealer::Dealer() {
     getNewDeck();
-    players.push_back(std::make_unique<Player>());
 }
 
 Dealer::~Dealer() = default;
 
-std::vector<std::unique_ptr<Player>>* Dealer::getPlayers() {
+std::vector<Player*>* Dealer::getPlayers() {
     return &players;
 }
 
 Deck* Dealer::getDeck() {
     return &deck;
+}
+
+void Dealer::joinPlayers(Player* player) {
+    players.push_back(player);
 }

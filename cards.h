@@ -1,8 +1,6 @@
 #ifndef BLUEJACK_CARDS_H
 #define BLUEJACK_CARDS_H
 
-#pragma once
-
 #include <unordered_map>
 #include <vector>
 #include <stdexcept>
@@ -17,6 +15,7 @@ struct Card {
 
 extern std::unordered_map<Value, int> cardValues;
 void initCardValues();
+std::string getCardName(Card);
 
 class Deck {
     std::vector<Card> cards;

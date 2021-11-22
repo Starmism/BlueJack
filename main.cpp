@@ -1,28 +1,15 @@
 #include <iostream>
 #include "dealer.h"
+#include "round.h"
 
 int main() {
     initCardValues();
-    auto dealer = std::make_unique<Dealer>();
+    auto dealer = new Dealer();
+    auto ethan = new Player("Ethan");
+    auto john = new Player("John");
+    dealer->joinPlayers(ethan);
+    dealer->joinPlayers(john);
 
-    dealer->hit();
-    dealer->hit();
-    dealer->hitPlayers();
-    dealer->hitPlayers();
-
-    while (true) {
-        for (auto& player : *dealer->getPlayers()) {
-            auto action = player->chooseAction();
-            if (action == Hit) {
-                player->hit(dealer->getDeck()->getACard(), true);
-            } else if (action == Stand) {
-                continue;
-            } else {
-                // TODO: Add splitting logic
-                continue;
-            }
-        }
-
-        break;
-    }
+    auto round = Round(dealer);
+    round.go();
 }

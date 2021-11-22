@@ -7,14 +7,15 @@ class Dealer {
 private:
     Hand hand;
     Deck deck;
-    std::vector<std::unique_ptr<Player>> players;
+    std::vector<Player*> players;
     void getNewDeck ();
 public:
     void hit ();
     int sumOfHand ();
     Action chooseAction ();
     void hitPlayers ();
-    std::vector<std::unique_ptr<Player>>* getPlayers ();
+    std::vector<Player*>* getPlayers ();
+    void joinPlayers(Player* player);
     Deck* getDeck ();
     Dealer ();
     ~Dealer ();

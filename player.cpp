@@ -1,14 +1,17 @@
 #include "player.h"
 #include <memory>
 #include <iostream>
+#include <utility>
 
-Player::Player() {
+Player::Player(std::string name) {
     hands = {
             std::make_unique<Hand>(),
             nullptr
     };
-    money = 100.0;
+    blues = 100.0;
+    this->name = std::move(name);
 }
+
 /**
  * Adds a card to the specified hand
  * @param card The card to add
@@ -54,6 +57,12 @@ Action Player::chooseAction() {
     bool canSplit = hands.second == nullptr && hands.first->cards.size() == 2 &&
         cardValues.at(hands.first->cards.at(0).value) == cardValues.at(hands.first->cards.at(1).value);
 
+    std::cout << "Player " + name + ", your hand is currently: ";
+    for (auto& card : hands.first->cards) {
+        std::cout << getCardName(card) << ", ";
+    }
+    std::cout << std::endl << std::endl;
+
     std::cout << "What would you like to do?" << std::endl;
     std::cout << "Press H to hit, S to stand";
     if (canSplit) {
@@ -76,6 +85,24 @@ Action Player::chooseAction() {
         }
         std::cout << "Invalid answer, try again!";
     }
+}
+
+std::string Player::getName() {
+    return name;
+}
+
+double Player::getBlues() {
+    return blues;
+}
+
+void Player::deductBlues(double amount) {
+    std::cout << "Player " << name << " deducted " << amount << " blues." << std::endl;
+    blues -= amount;
+}
+
+void Player::giveBlues(double amount) {
+    std::cout << "Player " << name << " gained " << amount << " blues!" << std::endl;
+    blues += amount;
 }
 
 

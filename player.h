@@ -9,12 +9,17 @@ enum Action { Hit, Stand, Split };
 
 class Player {
     std::pair<std::unique_ptr<Hand>, std::unique_ptr<Hand>> hands;
-    double money;
+    double blues;
+    std::string name;
 public:
+    std::string getName();
+    double getBlues();
+    void giveBlues(double);
+    void deductBlues(double);
     bool hit (Card, bool);
     int sumOfHand (bool);
     Action chooseAction ();
-    Player ();
+    explicit Player (std::string);
     ~Player ();
 };
 
