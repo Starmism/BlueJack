@@ -18,15 +18,18 @@ double Round::get(Player* player) {
 }
 
 void Round::go() {
+    // Deal initial hands
     dealer->hit();
     dealer->hit();
     dealer->hitPlayers();
     dealer->hitPlayers();
 
+    // Add zero bets to the map for starting value lookup
     for (auto& player : *dealer->getPlayers()) {
         bets.insert_or_assign(player, 0);
     }
 
+    // Get everyone's bets
     for (auto& player : *dealer->getPlayers()) {
         std::cout << "Player " << player->getName() << " - Balance " << player->getBlues() << std::endl;
         std::cout << "Please insert your bet > ";
@@ -35,6 +38,7 @@ void Round::go() {
         bet(player, playerBet);
     }
 
+    // Go until each player busts or stands
     for (auto& player : *dealer->getPlayers()) {
         bool quit = false;
         while (!quit) {
@@ -56,6 +60,7 @@ void Round::go() {
         }
     }
 
+    // Go until the dealer busts or stands
     bool quit = false;
     while (!quit) {
         switch(dealer->chooseAction()) {
@@ -70,6 +75,7 @@ void Round::go() {
         }
     }
 
+    // Show the game results and distribute winnings!
     for (auto& player : *dealer->getPlayers()) {
         auto playerHand = player->sumOfHand(true);
         auto dealerHand = dealer->sumOfHand();
