@@ -4,12 +4,14 @@
 
 int main() {
     initCardValues();
+    auto round = Round();
+
     auto dealer = new Dealer();
     auto ethan = new Player("Ethan");
     auto john = new Player("John");
-    dealer->joinPlayers(ethan);
-    dealer->joinPlayers(john);
 
-    auto round = Round(dealer);
+    round.joinDealer(dealer);
+    round.joinPlayers(2, ethan, john);
+
     round.go();
 }

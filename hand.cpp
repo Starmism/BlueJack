@@ -2,6 +2,10 @@
 
 Hand::Hand() = default;
 
+bool greaterComparator(Card a, Card b) {
+    return cardValues.at(a.value) > cardValues.at(b.value);
+}
+
 void Hand::add_card(Card card) {
     cards.push_back(card);
 }
@@ -11,9 +15,10 @@ void Hand::clear_hand() {
 }
 
 int Hand::sum() {
-    auto totalValue = 0;
+    int totalValue = 0;
+    sort(cards.begin(), cards.end(), &greaterComparator);
     for (const auto& card: cards) {
-        auto value = cardValues.at(card.value);
+        int value = cardValues.at(card.value);
         if (value != -1) {
             totalValue += value;
         } else {

@@ -9,12 +9,15 @@ class Round {
 private:
     std::map<Player*, double> bets;
     Dealer* dealer;
-public:
     void bet (Player*, double);
     double bust (Player*);
+    void hitPlayers ();
+public:
     double get (Player*);
+    void joinPlayers (int, ...);
+    void joinDealer (Dealer*);
     void go ();
-    Round (Dealer* dealer);
+    Round ();
     ~Round ();
 };
 

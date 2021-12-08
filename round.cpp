@@ -1,5 +1,8 @@
 #include <iostream>
 #include "round.h"
+#include <cstdarg>
+
+Round::Round() = default;
 
 void Round::bet(Player* player, double blues) {
     player->deductBlues(blues);
@@ -17,20 +20,35 @@ double Round::get(Player* player) {
     return bets.at(player);
 }
 
+void Round::hitPlayers() {
+    auto deck = dealer->getDeck();
+    for (auto& [player, _] : bets) {
+        player->hit(deck->getACard(), true);
+    }
+}
+
+void Round::joinPlayers(int num, ...) {
+    va_list valist;
+    va_start(valist, num);
+    for (int i = 0; i < num; i++) {
+        bets.insert_or_assign(va_arg(valist, Player*), 0);
+    }
+    va_end(valist);
+}
+
+void Round::joinDealer(Dealer* givenDealer) {
+    dealer = givenDealer;
+}
+
 void Round::go() {
     // Deal initial hands
     dealer->hit();
     dealer->hit();
-    dealer->hitPlayers();
-    dealer->hitPlayers();
-
-    // Add zero bets to the map for starting value lookup
-    for (auto& player : *dealer->getPlayers()) {
-        bets.insert_or_assign(player, 0);
-    }
+    hitPlayers();
+    hitPlayers();
 
     // Get everyone's bets
-    for (auto& player : *dealer->getPlayers()) {
+    for (auto& [player, _] : bets) {
         std::cout << "Player " << player->getName() << " - Balance " << player->getBlues() << std::endl;
         std::cout << "Please insert your bet > ";
         double playerBet;
@@ -39,7 +57,7 @@ void Round::go() {
     }
 
     // Go until each player busts or stands
-    for (auto& player : *dealer->getPlayers()) {
+    for (auto& [player, _] : bets) {
         bool quit = false;
         while (!quit) {
             switch (player->chooseAction()) {
@@ -76,29 +94,25 @@ void Round::go() {
     }
 
     // Show the game results and distribute winnings!
-    for (auto& player : *dealer->getPlayers()) {
+    for (auto& [player, bet] : bets) {
+        if (bet == -1) continue;
+
         auto playerHand = player->sumOfHand(true);
         auto dealerHand = dealer->sumOfHand();
 
-        if (bets.at(player) == -1) continue;
-
         if (dealerHand > 21) {
             std::cout << "Dealer busted! Player " << player->getName() << " gets double dollars!" << std::endl;
-            player->giveBlues(bets.at(player) * 2.0);
+            player->giveBlues(bet * 2.0);
         } else if (playerHand == dealerHand) {
             std::cout << "Player " << player->getName() << " pushed!" << std::endl;
-            player->giveBlues(bets.at(player));
+            player->giveBlues(bet);
         } else if (playerHand > dealerHand) {
             std::cout << "Player " << player->getName() << " won! Double dollars!" << std::endl;
-            player->giveBlues(bets.at(player) * 2.0);
+            player->giveBlues(bet * 2.0);
         } else {
             std::cout << "Player " << player->getName() << " lost! Nothing for you!" << std::endl;
         }
     }
-}
-
-Round::Round(Dealer* dealer) {
-    this->dealer = dealer;
 }
 
 Round::~Round() = default;

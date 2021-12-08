@@ -1,5 +1,9 @@
 #include "dealer.h"
 
+Dealer::Dealer() {
+    getNewDeck();
+}
+
 void Dealer::hit() {
     hand.add_card(deck.getACard());
 }
@@ -16,26 +20,8 @@ void Dealer::getNewDeck() {
     deck = Deck();
 }
 
-void Dealer::hitPlayers() {
-    for (auto& player : players) {
-        player->hit(deck.getACard(), true);
-    }
-}
-
-Dealer::Dealer() {
-    getNewDeck();
-}
-
-Dealer::~Dealer() = default;
-
-std::vector<Player*>* Dealer::getPlayers() {
-    return &players;
-}
-
 Deck* Dealer::getDeck() {
     return &deck;
 }
 
-void Dealer::joinPlayers(Player* player) {
-    players.push_back(player);
-}
+Dealer::~Dealer() = default;

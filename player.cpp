@@ -12,14 +12,7 @@ Player::Player(std::string name) {
     this->name = std::move(name);
 }
 
-/**
- * Adds a card to the specified hand
- * @param card The card to add
- * @param first True for first hand, false for second hand
- * @return Boolean representing success - True for success, false for failure
- */
 bool Player::hit(Card card, bool first) {
-    // If they try to add a card to the first hand, put it in
     if (first) {
         hands.first->add_card(card);
         return true;
@@ -33,11 +26,6 @@ bool Player::hit(Card card, bool first) {
     return false;
 }
 
-/**
- * Returns the sum of the chosen hand
- * @param first - True for first hand, false for second hand
- * @return The sum of the value of the cards in a given hand, or -1 if the hand doesn't exist
- */
 int Player::sumOfHand(bool first) {
     if (first) {
         return hands.first->sum();
@@ -49,10 +37,6 @@ int Player::sumOfHand(bool first) {
     return -1;
 }
 
-/**
- * This method forces the player to choose an action
- * @return One of the three Actions, depending on what they can do
- */
 Action Player::chooseAction() {
     bool canSplit = hands.second == nullptr && hands.first->cards.size() == 2 &&
         cardValues.at(hands.first->cards.at(0).value) == cardValues.at(hands.first->cards.at(1).value);
@@ -103,6 +87,10 @@ void Player::deductBlues(double amount) {
 void Player::giveBlues(double amount) {
     std::cout << "Player " << name << " gained " << amount << " blues!" << std::endl;
     blues += amount;
+}
+
+bool Player::split() {
+    return false;
 }
 
 

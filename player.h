@@ -12,13 +12,14 @@ class Player {
     double blues;
     std::string name;
 public:
-    std::string getName();
-    double getBlues();
-    void giveBlues(double);
-    void deductBlues(double);
+    std::string getName ();
+    double getBlues ();
+    void giveBlues (double);
+    void deductBlues (double);
     bool hit (Card, bool);
     int sumOfHand (bool);
     Action chooseAction ();
+    bool split ();
     explicit Player (std::string);
     ~Player ();
 };
